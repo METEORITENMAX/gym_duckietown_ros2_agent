@@ -1,5 +1,7 @@
 import rclpy
 from rclpy.node import Node
+from std_msgs.msg import String
+from std_msgs.msg import Bool
 from sensor_msgs.msg import CompressedImage, CameraInfo
 from duckietown_msgs.msg import Twist2DStamped, WheelsCmdStamped
 import numpy as np
@@ -8,11 +10,13 @@ import cv2
 from PIL import Image
 
 
-class LaneFollowCalc(Node):
+class LaneFollow(Node):
 
     def __init__(self):
         super().__init__('Lane_Follow')
-        self.pub_drive_cmd_ = self.create_publisher(WheelsCmdStamped, '/None/wheels_driver_node/wheels_cmd', 10)
+        self.pub_drive_direction_ = self.create_publisher(String, '/Drive/Direction', 10)
+        self.red_line_detected_ = self.create_publisher(Bool, '/RedLine/InFront', 10)
+        #self.pub_drive_cmd_ = self.create_publisher(WheelsCmdStamped, '/None/wheels_driver_node/wheels_cmd', 10)
         self.sub_img_ = self.create_subscription(CompressedImage, '/None/corrected_image/compressed', self.sub_img_cb, 10 )
         timer_period = 1.0  # seconds
         #self.timer = self.create_timer(timer_period, self.sub_img_cb)
@@ -26,36 +30,34 @@ class LaneFollowCalc(Node):
         upper = np.array([45, 255, 255], dtype="uint8")
         mask = cv2.inRange(image, lower, upper)
 
+        r_low = np.array([170, 100, 0], dtype="uint8")
+        r_up = np.array([180, 255, 255], dtype="uint8")
+        mask2 = cv2.inRange(image, r_low, r_up)
+
+        red_obj_con = cv2.findContours(mask2, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+        red_obj_con = red_obj_con[0] if len(red_obj_con) == 2 else red_obj_con[1]
+
+
         cnts = cv2.findContours(mask, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
         cnts = cnts[0] if len(cnts) == 2 else cnts[1]
-        drive_cmd = WheelsCmdStamped()
+        drive_dir = String()
+        redline = Bool()
+        redline.data = False
         if len(cnts) != 0:
             x,y,w,h = cv2.boundingRect(cnts[0])
             if x < 100:
-                print("left")
-                drive_cmd.vel_left = 0.0
-                drive_cmd.vel_right = 0.2
+                drive_dir.data = "left"
             elif x > 200:
-                print("right")
-                drive_cmd.vel_left = 0.2
-                drive_cmd.vel_right = 0.0
+                drive_dir.data = "right"
             else:
-                print("forward")
-                drive_cmd.vel_left = 0.4
-                drive_cmd.vel_right = 0.4
+                drive_dir.data = "forward"
+        if len(red_obj_con) != 0:
+            x, y, w, h = cv2.boundingRect(red_obj_con[0])
+            if h * w > 5000 and y > 340:
+                redline.data = True
         self.i += 1
-        self.pub_drive_cmd_.publish(drive_cmd)
-
-        self.get_logger().info('I heard: "%s"' )
-
-    def timer_callback(self):
-        msg = WheelsCmdStamped()
-        h = 'Hello World: %d' % self.i
-        msg.vel_left = 0.0
-        msg.vel_right = 1.0
-        self.pub_drive_cmd_.publish(msg)
-        self.get_logger().info('Publishing: "%s"' % h)
-
+        self.pub_drive_direction_.publish(drive_dir)
+        self.red_line_detected_.publish(redline)
 
 
 
@@ -63,14 +65,14 @@ class LaneFollowCalc(Node):
 def main(args=None):
     rclpy.init(args=args)
 
-    lf_calc = LaneFollowCalc()
-
-    rclpy.spin(lf_calc)
+    lf = LaneFollow()
+    lf.get_logger().info('Lane Follow Node Started')
+    rclpy.spin(lf)
 
     # Destroy the node explicitly
     # (optional - otherwise it will be done automatically
     # when the garbage collector destroys the node object)
-    lf_calc.destroy_node()
+    lf.destroy_node()
     rclpy.shutdown()
 
 
