@@ -43,8 +43,10 @@ class LaneFollow(Node):
         drive_dir = String()
         redline = Bool()
         redline.data = False
+        x1 = 0
         if len(cnts) != 0:
             x,y,w,h = cv2.boundingRect(cnts[0])
+            x1 = x
             if x < 100:
                 drive_dir.data = "left"
             elif x > 200:
@@ -53,7 +55,7 @@ class LaneFollow(Node):
                 drive_dir.data = "forward"
         if len(red_obj_con) != 0:
             x, y, w, h = cv2.boundingRect(red_obj_con[0])
-            if h * w > 5000 and y > 340:
+            if h * w > 5000 and y > 340 and x1 < x:
                 redline.data = True
         self.i += 1
         self.pub_drive_direction_.publish(drive_dir)
