@@ -1,3 +1,5 @@
+import os
+from glob import glob
 from setuptools import setup
 
 package_name = 'gym_duckietown_ros2_agent'
@@ -10,6 +12,7 @@ setup(
         ('share/ament_index/resource_index/packages',
             ['resource/' + package_name]),
         ('share/' + package_name, ['package.xml']),
+        (os.path.join('share', package_name), glob('launch/*.launch.py'))
     ],
     install_requires=['setuptools'],
     zip_safe=True,
@@ -22,6 +25,7 @@ setup(
     entry_points={
         'console_scripts': [
                 'rosagent = gym_duckietown_ros2_agent.rosagent:main',
+                'lfcmd = gym_duckietown_ros2_agent.lfcmd:main',
         ],
 #        'dependencies': [
 #                'env = gym_duckietown_ros2_agent.env:launch_env',
