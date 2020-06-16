@@ -5,8 +5,8 @@
                 "rel_pos": {
                     "__jsonqualname__": "__builtin__.tuple", 
                     "items": [
-                        0.8, 
-                        0.8
+                        0.8000000000000007, 
+                        0.7999999999999972
                     ]
                 }, 
                 "size": {
@@ -20,7 +20,7 @@
             "rel_pos": {
                 "__jsonqualname__": "__builtin__.tuple", 
                 "items": [
-                    11.565859208050277, 
+                    14.654164508418493, 
                     62.151964911113105
                 ]
             }, 
@@ -39,7 +39,7 @@
                 "rel_pos": {
                     "__jsonqualname__": "__builtin__.tuple", 
                     "items": [
-                        0, 
+                        0.4, 
                         2.0
                     ]
                 }
@@ -53,7 +53,7 @@
                     "__jsonqualname__": "__builtin__.tuple", 
                     "items": [
                         18.0, 
-                        0
+                        0.4
                     ]
                 }
             }
@@ -66,7 +66,7 @@
                     "__jsonqualname__": "__builtin__.tuple", 
                     "items": [
                         16.4, 
-                        0
+                        0.4
                     ]
                 }
             }
@@ -78,7 +78,7 @@
                 "rel_pos": {
                     "__jsonqualname__": "__builtin__.tuple", 
                     "items": [
-                        20.0, 
+                        19.6, 
                         2.0
                     ]
                 }

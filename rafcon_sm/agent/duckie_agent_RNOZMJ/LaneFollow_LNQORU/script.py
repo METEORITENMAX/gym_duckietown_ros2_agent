@@ -25,8 +25,8 @@ class LF(Node):
                 drive_cmd.vel_left = 0.2
                 drive_cmd.vel_right = 0.0
         else:
-            drive_cmd.vel_left = 0.4
-            drive_cmd.vel_right = 0.4
+            drive_cmd.vel_left = 0.35
+            drive_cmd.vel_right = 0.35
         self.pub_drive_cmd_.publish(drive_cmd)
     def sub_redline_cb(self, msg):
         if msg.data == True:

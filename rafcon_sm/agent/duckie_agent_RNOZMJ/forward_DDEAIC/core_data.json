@@ -5,7 +5,7 @@
         "__jsonqualname__": "rafcon.core.state_elements.logical_port.Income"
     }, 
     "input_data_ports": {}, 
-    "name": "LaneFollow", 
+    "name": "forward", 
     "outcomes": {
         "-2": {
             "__jsonqualname__": "rafcon.core.state_elements.logical_port.Outcome", 
@@ -23,16 +23,6 @@
             "outcome_id": 0
         }
     }, 
-    "output_data_ports": {
-        "0": {
-            "__jsonqualname__": "rafcon.core.state_elements.data_port.OutputDataPort", 
-            "data_port_id": 0, 
-            "data_type": {
-                "__type__": "__builtin__.int"
-            }, 
-            "default_value": null, 
-            "name": "output_0"
-        }
-    }, 
-    "state_id": "LNQORU"
+    "output_data_ports": {}, 
+    "state_id": "DDEAIC"
 }
