@@ -5,7 +5,7 @@
         "__jsonqualname__": "rafcon.core.state_elements.logical_port.Income"
     }, 
     "input_data_ports": {}, 
-    "name": "Hello World", 
+    "name": "right turn 2", 
     "outcomes": {
         "-2": {
             "__jsonqualname__": "rafcon.core.state_elements.logical_port.Outcome", 
@@ -24,5 +24,5 @@
         }
     }, 
     "output_data_ports": {}, 
-    "state_id": "PTGDSH"
+    "state_id": "WHGXGL"
 }

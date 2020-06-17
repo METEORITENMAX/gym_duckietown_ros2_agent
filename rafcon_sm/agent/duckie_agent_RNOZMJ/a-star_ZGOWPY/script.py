@@ -153,7 +153,7 @@ def execute(self, inputs, outputs, gvm):
     n4 = Node("Kohlscheid")
     n5 = Node("Stolberg")
     n1.successor.append(Neighbour(n2, 2, 'south', 'north'))
-    n1.successor.append(Neighbour(n3, 2, 'west', 'east'))
+    n1.successor.append(Neighbour(n3, 50, 'west', 'east'))
     n1.successor.append(Neighbour(n4, 2, 'north', 'south'))
     n1.successor.append(Neighbour(n5, 2, 'east', 'west'))
 
@@ -171,15 +171,20 @@ def execute(self, inputs, outputs, gvm):
 
     n5.successor.append(Neighbour(n4, 3, 'north', 'east'))
     n5.successor.append(Neighbour(n1, 2, 'west', 'east'))
-    n5.successor.append(Neighbour(n2, 3, 'south', 'east'))
+    #n5.successor.append(Neighbour(n2, 3, 'south', 'east'))
 
     adjazenz = [n1,n2,n3,n4,n5]
     heuristic = dict()
-    heuristic[n1] = 1.5
+    heuristic[n1] = 10.5
+    heuristic[n2] = 3.5
+    heuristic[n3] = 0
+    heuristic[n4] = 30.5
+    heuristic[n5] = 3
+    '''heuristic[n1] = 1.5
     heuristic[n2] = 3.5
     heuristic[n3] = 0
     heuristic[n4] = 3.5
-    heuristic[n5] = 3
+    heuristic[n5] = 3'''
     start = n5
     goal = n3
     pathfinding = AStar(heuristic,start,goal)
